@@ -24,6 +24,7 @@ const formToMap = (form) => {
 function getSettings(){
     let settings = { messages: [], token: '' };
     try {
+      console.log({ settings: document.getElementById("settings")});
       settings = JSON.parse(document.getElementById("settings").textContent);
     } catch {}
     return settings 
@@ -67,8 +68,16 @@ async function askQuestion(answerElementId = "answer") {
 
   let answerEl = document.getElementById(answerElementId)
   if(!answerEl){
-    answerEl = document.createElement("div");
-    answerEl.id = answerElementId
+    answerEl = document.createElement("textarea");
+    answerEl.setAttribute("id", answerElementId)
+    answerEl.setAttribute('cols', '30')
+    answerEl.style.cssText = `
+      background: transparent; 
+      margin-top: 10px; 
+      border: none; 
+      width: 100%;
+    `
+
     document.body.append(answerEl)
   }
 
