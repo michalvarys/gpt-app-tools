@@ -69,7 +69,7 @@ async function askQuestion(answerElementId = "answer") {
   const form = document.getElementById("form");
   const values = formToMap(form);
   const messages = formattedMessages(values);
-  
+  const max_tokens = values.max_tokens ? Number(values.max_tokens) : 1024;
   const response = await fetch("https://api.openai.com/v1/chat/completions", {
     method: "POST",
     headers: {
@@ -80,7 +80,7 @@ async function askQuestion(answerElementId = "answer") {
       model: "gpt-3.5-turbo",
       n: 1,
       messages,
-      max_tokens: 1024,
+      max_tokens,
       //temperature: 0.3
     }),
   });

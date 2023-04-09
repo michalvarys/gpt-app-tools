@@ -15,26 +15,31 @@
   </head>
 
   <body>
-    <div id="fb-editor"></div>
+    <div class="new-action-buttons mt-4">
+      <button id="trash" class="btn btn-link">Vymazat všechna pole</button>
+      <button id="show-data" class="btn btn-primary">Zobrazit JSON</button>
+      <button id="save-data" class="btn btn-info">Uložit</button>
+    </div>
+
+    <div id="fb-rendered-form">
+      <form action="#"></form>
+      <button class="btn btn-default edit-form">Edit</button>
+    </div>
+    
+    <div id="fb-editor" class="fb-editor"></div>
     <div id="build-wrap"></div>
+    <!--
     <form action="" id="form-builder-pages">
       <ul id="tabs">
         <li id="add-page-tab"><a href="#new-page">+ Přidat</a></li>
       </ul>
       <div id="new-page"></div>
     </form>
-
-    <div class="new-action-buttons mt-4">
-      <button id="trash" class="btn btn-link">Vymazat všechna pole</button>
-      <button id="show-data" class="btn btn-primary">Zobrazit JSON</button>
-      <button id="save-data" class="btn btn-info">Uložit</button>
-      <!-- <button id="preview" class="btn btn-secondary">Ukázat náhled</button> -->
-    </div>
+  -->
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
     <script src="https://formbuilder.online/assets/js/form-builder.min.js"></script>
-    <script src="builder.js">
-    </script>
+    <script src="builder.js"></script>
   </body>
 </html>

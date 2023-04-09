@@ -1,85 +1,103 @@
 [
-    {
-      "type": "hidden",
-      "name": "prompt",
-      "value": "Jsi profesionální copywriter a skvělý vypravěč. Máš za úkol vytvořit perfektní příspěvek na sociální síť {social_media} v tónu {tone}. Další informace: {description}"
-    },
-    {
-      "type": "select",
-      "required": true,
-      "label": "Sociální síť",
-      "className": "form-control",
-      "name": "social_media",
-      "multiple": false,
-      "values": [
-        {
-            "label": "Facebook",
-            "value": "Facebook",
-            "selected": true
-        },
-        {
-          "label": "Youtube",
-          "value": "Youtube",
-          "selected": false
-        },
-        {
-          "label": "Instagram",
-          "value": "Instagram",
-          "selected": false
-        },
-        {
-          "label": "Twitter",
-          "value": "Instagram",
-          "selected": false
-        }
-      ]
-    },
-    {
-      "type": "select",
-      "required": true,
-      "label": "Tón",
-      "className": "form-control",
-      "name": "tone",
-      "multiple": false,
-      "values": [
-        {
-          "label": "Profesionální",
-          "value": "Profesionální",
-          "selected": true
-        },
-        {
-          "label": "Kreativní",
-          "value": "Kreativní",
-          "selected": false
-        },
-        {
-          "label": "Naštvaný",
-          "value": "Naštvaný",
-          "selected": false
-        },
-        {
-          "label": "Sarkastický",
-          "value": "Sarkastický",
-          "selected": false
-        }
-      ]
-    },
-    {
-      "type": "textarea",
-      "required": true,
-      "label": "Popis příspěvku",
-      "className": "form-control",
-      "name": "description",
-      "subtype": "textarea",
-      "value": "Prodej šamponu na vlasy"
-    },
-    {
-        "type": "button",
-        "subtype": "submit",
-        "label": "Odeslat",
-        "className": "btn-primary btn",
-        "name": "submit",
-        "access": false,
-        "style": "primary"
+  {
+    "type": "header",
+    "subtype": "h2",
+    "label": "Generátor příspěvků"
+  },
+  {
+    "type": "textarea",
+    "required": true,
+    "label": "Popis",
+    "className": "form-control",
+    "name": "description",
+    "subtype": "textarea"
+  },
+  {
+    "type": "select",
+    "required": true,
+    "label": "Sociální síť",
+    "className": "form-control",
+    "name": "social_media",
+    "multiple": false,
+    "values": [
+      {
+        "label": "Facebook",
+        "value": "Facebook",
+        "selected": true
+      },
+      {
+        "label": "Youtube",
+        "value": "Youtube",
+        "selected": false
+      },
+      {
+        "label": "Instagram",
+        "value": "Instagram",
+        "selected": false
+      },
+      {
+        "label": "Twitter",
+        "value": "Instagram",
+        "selected": false
       }
-  ]
+    ]
+  },
+  {
+    "type": "select",
+    "required": true,
+    "label": "Tón",
+    "className": "form-control",
+    "name": "tone",
+    "multiple": false,
+    "values": [
+      {
+        "label": "Profesionální",
+        "value": "Profesionální",
+        "selected": true
+      },
+      {
+        "label": "Kreativní",
+        "value": "Kreativní",
+        "selected": false
+      },
+      {
+        "label": "Naštvaný",
+        "value": "Naštvaný",
+        "selected": false
+      },
+      {
+        "label": "Sarkastický",
+        "value": "Sarkastický",
+        "selected": false
+      },
+      {
+        "label": "Smutný",
+        "value": "Smutný",
+        "selected": false
+      }
+    ]
+  },
+  {
+    "type": "number",
+    "required": true,
+    "label": "Maximum tokenů",
+    "className": "form-control",
+    "name": "max_tokens",
+    "value": "1024",
+    "min": 10,
+    "max": 2048
+  },
+  {
+    "type": "hidden",
+    "name": "prompt",
+    "value": "Jsi profesionální copywriter a skvělý vypravěč. Máš za úkol vytvořit {tone} příspěvek na sociální síť {social_media}. Zde jsou další informace: {description}"
+  },
+  {
+    "type": "button",
+    "subtype": "submit",
+    "label": "Odeslat",
+    "className": "btn-primary btn",
+    "name": "submit",
+    "style": "primary"
+  }
+]
