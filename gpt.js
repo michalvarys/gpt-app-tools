@@ -1,5 +1,5 @@
-const openingSign = '{'
-const closingSign = '}'
+const openingSign = "{";
+const closingSign = "}";
 
 const replaceValues = (text, values) => {
   let newText = text;
@@ -24,8 +24,8 @@ const formToMap = (form) => {
   return values;
 };
 
-async function loadJSON(elementId){
-  let json = {}
+async function loadJSON(elementId) {
+  let json = {};
   try {
     const el = document.getElementById(elementId);
     const src = el.getAttribute("src");
@@ -40,20 +40,20 @@ async function loadJSON(elementId){
 
 let settings = { messages: [], token: "" };
 async function loadSettings() {
-  settings = await loadJSON('settings');
+  settings = await loadJSON("settings");
   return settings;
 }
 
 function formattedMessages(values) {
   let { messages } = settings;
 
-  if(values.prompt){
+  if (values.prompt) {
     messages = [
       {
         content: values.prompt,
         role: "user",
       },
-    ]
+    ];
   }
 
   return messages.map((message) => {
@@ -119,7 +119,8 @@ async function buildForm() {
       }
 
       let data;
-      let dataElement = document.getElementById("form-data");
+      let dataElement = document.querySelector("[data-form-builder]");
+
       if (!dataElement) {
         return resolve();
       }
@@ -138,15 +139,19 @@ async function buildForm() {
         return setTimeout(again, 500);
       }
 
-      const formData = dataElement.src ? (await loadJSON(dataElement.id)) : dataElement.textContent;
+      dataElement.id = "form-data";
+      const formData = dataElement.src
+        ? await loadJSON(dataElement.id)
+        : dataElement.textContent;
+
       try {
-        data = typeof formData === 'string' ?  JSON.parse(formData) : formData;
+        data = typeof formData === "string" ? JSON.parse(formData) : formData;
       } catch {
         alert("Chyba v JSONu");
       }
 
       if (!data) {
-        return reject()
+        return reject();
       }
 
       let form = document.getElementById("form");
@@ -197,36 +202,38 @@ loader.innerHTML = `
 <div class="spinner-border" role="status">
   <span class="visually-hidden">Loading...</span>
 </div>
-`
+`;
 
 document.body.append(loader);
 
-async function load () {
+async function load() {
   try {
     // load settings
     const settings = await loadSettings();
     const jQuery = await buildForm();
-    
+    if(settings.app_title) {
+      document.head.title = settings.app_title
+    }
+
     if (!("jQuery" in window)) {
       throw new Error("jQuery not found");
     }
-    
+
     jQuery(function ($) {
       $("form").on("submit", (e) => {
         e.preventDefault();
 
-        loader.style.display = 'flex'
-        askQuestion(settings.answer).finally(()=>{
-          loader.style.display = 'none'
+        loader.style.display = "flex";
+        askQuestion(settings.answer).finally(() => {
+          loader.style.display = "none";
         });
       });
     });
   } catch (err) {
     console.log(err);
+  } finally {
+    loader.style.display = "none";
   }
-  finally{
-    loader.style.display = 'none'
-  }
-};
+}
 
 document.body.onload = load;
