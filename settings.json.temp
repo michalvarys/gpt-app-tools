@@ -1,0 +1,13 @@
+{
+    "token": "{OpenAI token}",
+    "messages": [
+        {
+            "role": "user",
+            "content": "This is your context prompt with {variable} taken from element"
+        },
+        {
+            "role": "user",
+            "content": "{description}"
+        }
+    ]
+}

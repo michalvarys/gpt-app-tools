@@ -1,7 +1,10 @@
+const openingSign = '{'
+const closingSign = '}'
+
 const replaceValues = (text, values) => {
   let newText = text;
   Object.keys(values).forEach((key) => {
-    const regex = new RegExp(`<${key}>`, "g");
+    const regex = new RegExp(`${openingSign}${key}${closingSign}`, "g");
     newText = newText.replace(regex, values[key]);
   });
   return newText;
@@ -21,33 +24,52 @@ const formToMap = (form) => {
   return values;
 };
 
-function getSettings(){
-    let settings = { messages: [], token: '' };
-    try {
-      console.log({ settings: document.getElementById("settings")});
-      settings = JSON.parse(document.getElementById("settings").textContent);
-    } catch {}
-    return settings 
+async function loadJSON(elementId){
+  let json = {}
+  try {
+    const el = document.getElementById(elementId);
+    const src = el.getAttribute("src");
+    if (!el) {
+      throw new Error("settings element not found");
+    }
+    const response = await fetch(src);
+    json = await response.json();
+  } catch {}
+  return json;
 }
 
-function formattedMessages(values){
-    const { messages } = getSettings()
-    return messages.map((message) => {
-        return {
-            ...message,
-            content: replaceValues(message.content, values)
-        };
-    })
+let settings = { messages: [], token: "" };
+async function loadSettings() {
+  settings = await loadJSON('settings');
+  return settings;
+}
+
+function formattedMessages(values) {
+  let { messages } = settings;
+
+  if(values.prompt){
+    messages = [
+      {
+        content: values.prompt,
+        role: "user",
+      },
+    ]
+  }
+
+  return messages.map((message) => {
+    return {
+      ...message,
+      content: replaceValues(message.content, values),
+    };
+  });
 }
 
 async function askQuestion(answerElementId = "answer") {
-  const settings = getSettings()
-
   /** @type {HTMLFormElement} */
   const form = document.getElementById("form");
   const values = formToMap(form);
-  const messages = formattedMessages(values)
-
+  const messages = formattedMessages(values);
+  
   const response = await fetch("https://api.openai.com/v1/chat/completions", {
     method: "POST",
     headers: {
@@ -57,29 +79,154 @@ async function askQuestion(answerElementId = "answer") {
     body: JSON.stringify({
       model: "gpt-3.5-turbo",
       n: 1,
-      best_of: 3,
       messages,
+      max_tokens: 1024,
       //temperature: 0.3
     }),
   });
-  
+
   const data = await response.json();
   const { message } = data.choices[0];
 
-  let answerEl = document.getElementById(answerElementId)
-  if(!answerEl){
+  let answerEl = document.getElementById(answerElementId);
+  if (!answerEl) {
     answerEl = document.createElement("textarea");
-    answerEl.setAttribute("id", answerElementId)
-    answerEl.setAttribute('cols', '30')
+    answerEl.className = "px-4 w-full px-2";
+    answerEl.setAttribute("id", answerElementId);
+    answerEl.setAttribute("rows", "18");
     answerEl.style.cssText = `
       background: transparent; 
       margin-top: 10px; 
       border: none; 
       width: 100%;
-    `
+    `;
 
-    document.body.append(answerEl)
+    document.body.append(answerEl);
   }
 
   answerEl.innerHTML = message.content.trim();
 }
+
+let counter = 0;
+async function buildForm() {
+  return new Promise((resolve, reject) => {
+    const again = async () => {
+      counter++;
+
+      if (counter > 10) {
+        alert("Něco se posralo při renderování formuláře");
+        return reject();
+      }
+
+      let data;
+      let dataElement = document.getElementById("form-data");
+      if (!dataElement) {
+        return resolve();
+      }
+
+      if (!("jQuery" in window)) {
+        const jquery = document.createElement("script");
+        jquery.src =
+          "//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js";
+        document.body.append(jquery);
+
+        const jqueryui = document.createElement("script");
+        jqueryui.src =
+          "//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js";
+        document.body.append(jqueryui);
+        counter = 0;
+        return setTimeout(again, 500);
+      }
+
+      const formData = dataElement.src ? (await loadJSON(dataElement.id)) : dataElement.textContent;
+      try {
+        data = typeof formData === 'string' ?  JSON.parse(formData) : formData;
+      } catch {
+        alert("Chyba v JSONu");
+      }
+
+      if (!data) {
+        return reject()
+      }
+
+      let form = document.getElementById("form");
+      if (!form) {
+        form = document.createElement("form");
+        form.setAttribute("id", "form");
+        document.body.prepend(form);
+      }
+
+      const formRenderer = document.getElementById("form-renderer");
+      if (!formRenderer) {
+        jQuery(function ($) {
+          const formbuilder = document.createElement("script");
+          formbuilder.src =
+            "https://formbuilder.online/assets/js/form-render.min.js";
+          formbuilder.id = "form-renderer";
+          document.body.append(formbuilder);
+          counter = 0;
+          setTimeout(again, 1000);
+        });
+
+        return;
+      }
+
+      const renderer = $(form).formRender({ formData });
+      resolve($);
+    };
+
+    again();
+  });
+}
+
+const loader = document.createElement("div");
+loader.style.cssText = `
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: white;
+  opacity: 0.6;
+`;
+
+loader.innerHTML = `
+<div class="spinner-border" role="status">
+  <span class="visually-hidden">Loading...</span>
+</div>
+`
+
+document.body.append(loader);
+
+async function load () {
+  try {
+    // load settings
+    const settings = await loadSettings();
+    const jQuery = await buildForm();
+    
+    if (!("jQuery" in window)) {
+      throw new Error("jQuery not found");
+    }
+    
+    jQuery(function ($) {
+      $("form").on("submit", (e) => {
+        e.preventDefault();
+
+        loader.style.display = 'flex'
+        askQuestion(settings.answer).finally(()=>{
+          loader.style.display = 'none'
+        });
+      });
+    });
+  } catch (err) {
+    console.log(err);
+  }
+  finally{
+    loader.style.display = 'none'
+  }
+};
+
+document.body.onload = load;

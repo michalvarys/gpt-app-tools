@@ -1,0 +1,54 @@
+[
+    {
+      "type": "header",
+      "subtype": "h1",
+      "label": "Generátor nadpisů"
+    },
+    {
+      "type": "select",
+      "required": true,
+      "label": "Tón",
+      "className": "form-control",
+      "name": "tone",
+      "multiple": false,
+      "values": [
+        {
+          "label": "Profesionální",
+          "value": "Profesionální",
+          "selected": true
+        },
+        {
+          "label": "Naštvaný",
+          "value": "Naštvaný",
+          "selected": false
+        },
+        {
+          "label": "Kreativní",
+          "value": "Kreativní",
+          "selected": false
+        },
+        {
+          "label": "Vtipný",
+          "value": "Vtipný",
+          "selected": false
+        }
+      ]
+    },
+    {
+      "type": "textarea",
+      "required": true,
+      "label": "Popisek",
+      "className": "form-control",
+      "name": "description",
+      "subtype": "textarea",
+      "value": "Prodej přírodního šamponu"
+    },
+    {
+      "type": "button",
+      "subtype": "submit",
+      "label": "Hotovo",
+      "className": "btn-primary btn",
+      "name": "button-1681019488954-0",
+      "style": "primary"
+    }
+  ]
