@@ -253,11 +253,11 @@ const inputSets = [
       submitButton,
       {
         ...systemPreset,
-        value: "Jsi profesionální copywriter a máš za úkol vytvořit {tone} nadpis.",
+        value: "Jsi profesionální copywriter",
       },
       {
         ...promptPreset,
-        value: "{description}",
+        value: "Máš za úkol vytvořit {tone} nadpis k {description}",
       },
     ],
   },
@@ -272,11 +272,11 @@ const inputSets = [
       tone,
       {
         ...systemPreset,
-        value: "Jsi profesionální copywriter a skvělý vypravěč. Máš za úkol vytvořit {tone} příspěvek na sociální síť {social_media}.",
+        value: "Jsi profesionální copywriter a skvělý vypravěč.",
       },
       {
         ...promptPreset,
-        value: "{description}",
+        value: "Máš za úkol vytvořit {tone} příspěvek na sociální síť {social_media}. Více informací: {description}",
       },
       submitButton,
     ],
@@ -290,11 +290,11 @@ const inputSets = [
       description,
       {
         ...systemPreset,
-        value: "Vytvoř návrh marketingové kampaně pomocí metody 'Scannable Content', který vytvoří obsah, který je snadno prohlédnutelný a rychle čitelný pro [description]. Zahrňte jasné nadpisy, odrážky a krátké odstavce, aby byl obsah přehlednější a účinnější.",
+        value: "Jsi profesionální marketér",
       },
       {
         ...promptPreset,
-        value: "[description]: {description}",
+        value: "Vytvoř návrh marketingové kampaně pomocí metody 'Scannable Content', který vytvoří obsah, který je snadno prohlédnutelný a rychle čitelný pro [description]. Zahrňte jasné nadpisy, odrážky a krátké odstavce, aby byl obsah přehlednější a účinnější. [description]: {description}",
       },
       submitButton,
     ],
