@@ -30,7 +30,7 @@ const i18n = {
   //     fieldRemoveWarning: "Opravdu chcete odstranit toto pole?",
   //     fileUpload: "Nahrání souboru",
   //     formUpdated: "Formulář aktualizován",
-  //     getStarted: "Přetáhněte pole zprava do tohoto okna",
+       getStarted: "Přetáhněte pole z menu do tohoto okna",
   //     header: "Hlavička",
   //     hide: "Skrýt",
   //     hidden: "Skrytý vstup",
