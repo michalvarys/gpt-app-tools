@@ -215,8 +215,16 @@ const promptPreset = {
   type: "hidden",
   name: "prompt",
   label: "Příkaz",
-  value: "Jsi profesionální copywriter...",
+  value: "{description}",
   icon: "R",
+};
+
+const systemPreset = {
+  type: "hidden",
+  name: "system",
+  label: "Systémová zpráva",
+  value: "Jsi profesionální copywriter...",
+  icon: "S",
 };
 
 const responseSize = {
@@ -230,7 +238,7 @@ const responseSize = {
  required: true,
 }
 
-const fields = [tone, description, promptPreset, social_media, submitButton, responseSize];
+const fields = [tone, description, promptPreset, systemPreset, social_media, submitButton, responseSize];
 const replaceFields = []; // [description, promptPreset, social_media, submitButton];
 const controlOrder = []; // [...replaceFields, ...fields].map((field) => field.type);
 
@@ -244,9 +252,12 @@ const inputSets = [
       tone,
       submitButton,
       {
+        ...systemPreset,
+        value: "Jsi profesionální copywriter a máš za úkol vytvořit {tone} nadpis.",
+      },
+      {
         ...promptPreset,
-        value:
-          "Jsi profesionální copywriter a máš za úkol vytvořit {tone} nadpis. Zde jsou další informace: {description}",
+        value: "{description}",
       },
     ],
   },
@@ -260,14 +271,36 @@ const inputSets = [
       description,
       tone,
       {
+        ...systemPreset,
+        value: "Jsi profesionální copywriter a skvělý vypravěč. Máš za úkol vytvořit {tone} příspěvek na sociální síť {social_media}.",
+      },
+      {
         ...promptPreset,
-        value:
-          "Jsi profesionální copywriter a skvělý vypravěč. Máš za úkol vytvořit {tone} příspěvek na sociální síť {social_media}. Zde jsou další informace: {description}",
+        value: "{description}",
+      },
+      submitButton,
+    ],
+  },
+  
+  {
+    label: "Marketingová Kampaň - Scannable Content",
+    name: "marketing-scannable-content",
+    showHeader: true,
+    fields: [
+      description,
+      {
+        ...systemPreset,
+        value: "Vytvoř návrh marketingové kampaně pomocí metody 'Scannable Content', který vytvoří obsah, který je snadno prohlédnutelný a rychle čitelný pro [description]. Zahrňte jasné nadpisy, odrážky a krátké odstavce, aby byl obsah přehlednější a účinnější.",
+      },
+      {
+        ...promptPreset,
+        value: "[description]: {description}",
       },
       submitButton,
     ],
   },
 ];
+
 const hideControls = []
 const disableFields = [
   'autocomplete', 
