@@ -115,9 +115,9 @@ const i18n = {
 
 const disabledAttrs = [
   "access",
-  "className",
+  //"className",
   "description",
-  "inline",
+  //"inline",
   "other",
   "rows",
   "step",
